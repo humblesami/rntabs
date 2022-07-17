@@ -12,3 +12,11 @@ web-build/
 
 # macOS
 .DS_Store
+web-report/
+.vscode
+.expo-shared
+.expo
+*.lock
+*-lock.json
+*.log
+.bash_profile
