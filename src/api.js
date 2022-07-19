@@ -4,12 +4,14 @@ let apiClient = {};
     async function fetch_request(endpoint, method, req_data={}) {
         let fetch_options = {
             method: method,
+        }        
+        if(method.toLowerCase() == 'get'){
+            fetch_options.data = req_data;            
         }
-        fetch_options.data = req_data;
-        if(method.toLowerCase() == 'post'){
-            fetch_options.body = JSON.stringify(req_data);
+        else{
+            fetch_options.body = req_data;
         }
-        console.log(fetch_options);
+        console.log(fetch_options, req_data);
         try {
             const response = await fetch(api_url+endpoint, fetch_options);
             const res = response.json();
@@ -61,7 +63,7 @@ let apiClient = {};
                         uri: file
                     });
                 });
-                console.log(req_data);
+                // console.log(req_data);
                 let res = await fetch_request(endpoint, 'POST', req_data);
                 return res;
             }

@@ -9,8 +9,9 @@ const Stack = createStackNavigator();
 
 const UserNavigator = () => (
     <Stack.Navigator mode="modal" screenOptions={{ headerShown: false }} >
-        <Stack.Screen name="UserUpdate" component={UserUpdate} />
         <Stack.Screen name="UserList" component={UserList} />
+        <Stack.Screen name="UserUpdate" component={UserUpdate} />
+        
     </Stack.Navigator>
 );
 

@@ -6,15 +6,27 @@ import ErrorMessage from './ErrorMessage';
 
 
 class AddUserScreen extends Component {
-    constructor() {
+    constructor(received) {
         super();
-        this.state = {
-            id: '',
-            name: '',
-            email: '',
-            mobile: '',
-            isLoading: false
-        };
+        let user = received.route.params;
+        if(user && user.id){
+            this.state = {
+                id: user.id,
+                name: user.name,
+                email: user.email,
+                mobile: user.mobile,
+                isLoading: false
+            };
+        }
+        else{
+            this.state = {
+                id: '',
+                name: '',
+                email: '',
+                mobile: '',
+                isLoading: false
+            };
+        }
     }
 
     inputValueUpdate = (val, prop) => {
@@ -51,9 +63,10 @@ class AddUserScreen extends Component {
                 isLoading: true,
             });
             apiClient.post_data('/user-update', obj_this.get_state()).then((res) => {
+                console.log(res);
                 if(res && res.status == 'success'){
                     obj_this.clear_state();
-                    obj_this.props.navigation.navigate('UserSList');
+                    obj_this.props.navigation.navigate('UserList');
                 }
                 else{
                     if(res && res.status == 'error'){

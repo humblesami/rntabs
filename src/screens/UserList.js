@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, ScrollView, ActivityIndicator, Text, View } from 'react-native';
 import { ListItem } from 'react-native-elements'
+// import { FlatList } from 'react-native-web';
 import apiClient from '../api';
 import NavButton from '../navigation/navbutton';
 import routes from '../navigation/routes';
@@ -32,7 +33,7 @@ class UserScreen extends Component {
                 obj_this.setState({ error: res.data, isLoading: false });
             }
             else{
-                obj_this.setState({ userArr : [], isLoading: false});
+                obj_this.setState({ userArr : res.data, isLoading: false});
             }
             // console.log(obj_this.state);
         }).catch((err) => {
@@ -70,22 +71,22 @@ class UserScreen extends Component {
         }
         return (
             <ScrollView style={styles.container}>
+                <NavButton onPress={() => obj_this.props.navigation.navigate(routes.UserUpdate)} />
                 {
-                    this.state.userArr.map((item, i) => {
+                    obj_this.state.userArr.map((item, i) => {
                         return (
-                            <View>
-                                <NavButton onPress={() => obj_this.props.navigation.navigate(routes.UserUpdate, item)} />
-                                <ListItem
-                                    key={i}
-                                    chevron
-                                    bottomDivider
-                                    title={item.name}
-                                    subtitle={item.email}
-                                    onPress={() => {
-                                        obj_this.props.navigation.navigate('UserDetailScreen', { user: item });
-                                    }}
-                                />
-                            </View>
+                            <ListItem
+                                key={item.id}
+                                bottomDivider
+                                title={item.name}
+                                subtitle={item.email}
+                                onPress={() => {
+                                    obj_this.props.navigation.navigate('UserUpdate', item);
+                                }}
+                            >
+                                <Text>{item.name}</Text>
+                                <Text>{item.email}</Text>
+                            </ListItem>
                         );
                     })
                 }
