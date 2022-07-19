@@ -15,7 +15,7 @@ class EditScreen extends Component {
         this.attributes.forEach((prop)=>{
             _self.state[prop] = '';
         });
-        console.log(this.state, this.attributes, received_obj);
+        // console.log(this.state, this.attributes, received_obj);
         if(received_obj && received_obj.id){
             this.attributes.forEach((prop)=>{
                 _self.state[prop] = received_obj[prop];
@@ -29,10 +29,10 @@ class EditScreen extends Component {
             isLoading: true,
         });
         apiClient.post_data(endpoint, obj_this.get_state()).then((res) => {
-            console.log(res);
+            // console.log(res);
             if(res && res.status == 'success'){
                 obj_this.reset_state();
-                obj_this.props.navigation.navigate(next_screen);
+                obj_this.props.navigation.navigate(next_screen, {q: new Date().toString()});
             }
             else{
                 if(res && res.status == 'error'){
@@ -87,7 +87,7 @@ class EditScreen extends Component {
 const EditStyles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 35
+        padding: 20
     },
     inputGroup: {
         flex: 1,
@@ -104,7 +104,15 @@ const EditStyles = StyleSheet.create({
         position: 'absolute',
         alignItems: 'center',
         justifyContent: 'center'
-    }
+    },
+    buttonWithText: {
+        flex: 1,
+        paddingTop: 20,
+        paddingBottom: 20,
+        flexWrap: "wrap",
+        flexDirection: "row",
+    },
+
 });
 
 export { EditScreen, EditStyles};

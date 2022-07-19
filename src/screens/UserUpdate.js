@@ -1,5 +1,5 @@
 import {EditScreen, EditStyles} from './edit_screen';
-import { Button, TextInput, ScrollView, ActivityIndicator, View } from 'react-native';
+import { Button, TextInput, ScrollView, ActivityIndicator, Text, View } from 'react-native';
 import NavButton from '../navigation/navbutton';
 import ErrorMessage from './ErrorMessage';
 
@@ -27,8 +27,19 @@ class AddUserScreen extends EditScreen {
         }
         return (
             <ScrollView style={EditStyles.container}>
-                <NavButton onPress={() => obj_this.props.navigation.navigate('UserList')} />
+                <View style={EditStyles.buttonWithText}>
+                    <View>
+                        <NavButton icon="mail" onPress={() => obj_this.props.navigation.navigate('UserList', {q: new Date().toString()})} />
+                    </View>
+                    <View style={{paddingTop: 10, paddingLeft:10}}>
+                        <Text>User List</Text>
+                    </View>
+                </View>
+
                 <ErrorMessage txt={obj_this.state.error} />
+                <View>
+                    <Text>{new Date().toString()}</Text>
+                </View>
                 <View>
                     <TextInput
                         placeholder={'Id'}

@@ -6,36 +6,34 @@ import { ListItem } from 'react-native-elements'
 // import { FlatList } from 'react-native-web';
 import apiClient from '../api';
 import NavButton from '../navigation/navbutton';
-import routes from '../navigation/routes';
+import {EditStyles} from './edit_screen';
 
 
 class UserScreen extends Component {
 
-    constructor() {
+    constructor(received) {
         super();
         this.state = {
             isLoading: true,
             userArr: [],
             error: ''
         };
-    }
-
-    componentDidMount() {
         this.getData();
+        console.log(received.route.params);
     }
 
     getData(){
         let obj_this = this;
 
         apiClient.get_data('/user-list', {a:1, b:2}).then(function(res){
-            console.log("response", res);
+            // console.log("response", res);
             if(res.status == 'error'){
                 obj_this.setState({ error: res.data, isLoading: false });
             }
             else{
                 obj_this.setState({ userArr : res.data, isLoading: false});
             }
-            // console.log(obj_this.state);
+            // console.log(res.data);
         }).catch((err) => {
             obj_this.setState({ error: 'Error in request '+err, isLoading: false });
         });
@@ -52,28 +50,23 @@ class UserScreen extends Component {
         }
 
         let error_message = obj_this.state.error;
-        if (error_message) {
-            return (
+        //<NavButton onPress={() => obj_this.props.navigation.navigate('UserUpdate')} />
+        return (
+            <ScrollView style={EditStyles.container}>
+                <View style={EditStyles.buttonWithText}>
+                    <View>
+                        <NavButton onPress={() => obj_this.props.navigation.navigate('UserUpdate', {q: new Date().toString()})} />
+                    </View>
+                    <View style={{paddingTop: 10, paddingLeft:10}}>
+                        <Text>Add New User</Text>
+                    </View>
+                </View>
                 <View style={styles.messageOnly}>
-                    <NavButton onPress={() => obj_this.props.navigation.navigate(routes.UserUpdate, {})} />
                     <Text>{error_message}</Text>
                 </View>
-            )
-        }
-
-        if( !obj_this.state.userArr.length ){
-            return (
-                <View style={styles.messageOnly}>
-                    <NavButton onPress={() => obj_this.props.navigation.navigate(routes.UserUpdate, {})} />
-                    <Text>No List Items</Text>
-                </View>
-            )
-        }
-        return (
-            <ScrollView style={styles.container}>
-                <NavButton onPress={() => obj_this.props.navigation.navigate(routes.UserUpdate)} />
                 {
                     obj_this.state.userArr.map((item, i) => {
+                        item.mobile = item.mobile ? item.mobile : item.phone;
                         return (
                             <ListItem
                                 key={item.id}
@@ -101,7 +94,7 @@ const styles = StyleSheet.create({
         paddingBottom: 22
     },
     messageOnly:{
-        padding: 40,
+        paddingTop: 30,
     },
     preloader: {
         left: 0,

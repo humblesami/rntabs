@@ -1,15 +1,15 @@
 import { TouchableOpacity, View, StyleSheet } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-function NavButton({ onPress }) {
+function NavButton({ onPress, icon }) {
     //
     return (
         <TouchableOpacity onPress={ onPress }>
             <View style={styles.container}>
                 <Ionicons
-                    name="ios-add"
+                    name={icon ? icon : "ios-add"}
                     color="orange"
-                    size={32}
+                    size={20}
                 />
             </View>
         </TouchableOpacity>
@@ -18,8 +18,9 @@ function NavButton({ onPress }) {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        paddingBottom: 22
+        borderColor: 'green',
+        borderWidth: 5,
+        padding: 5
     },
 });
 
