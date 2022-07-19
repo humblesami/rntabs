@@ -1,57 +1,16 @@
-import React, { Component } from 'react';
+import EditScreen from '../screen';
 import { Button, StyleSheet, TextInput, ScrollView, ActivityIndicator, View } from 'react-native';
 import apiClient from '../api';
 import NavButton from '../navigation/navbutton';
 import ErrorMessage from './ErrorMessage';
 
 
-class AddUserScreen extends Component {
+class AddUserScreen extends EditScreen {
     constructor(received) {
-        super();
-        let user = received.route.params;
-        if(user && user.id){
-            this.state = {
-                id: user.id,
-                name: user.name,
-                email: user.email,
-                mobile: user.mobile,
-                isLoading: false
-            };
-        }
-        else{
-            this.state = {
-                id: '',
-                name: '',
-                email: '',
-                mobile: '',
-                isLoading: false
-            };
-        }
-    }
-
-    inputValueUpdate = (val, prop) => {
-        const state = this.state;
-        state[prop] = val;
-        this.setState(state);
-    }
-
-    clear_state(){
-        this.setState({
-            id: '',
-            name: '',
-            email: '',
-            mobile: '',
-            isLoading: false,
-        });
-    }
-
-    get_state(){
-        return {
-            id: this.state.id,
-            name: this.state.name,
-            email: this.state.email,
-            mobile: this.state.mobile,
-        }
+        super(received);
+        let attributes = ['id', 'name', 'mobile', 'email'];
+        let received_obj = received.route.params;
+        this.init_state(attributes, received_obj);
     }
 
     storeUser() {
@@ -65,7 +24,7 @@ class AddUserScreen extends Component {
             apiClient.post_data('/user-update', obj_this.get_state()).then((res) => {
                 console.log(res);
                 if(res && res.status == 'success'){
-                    obj_this.clear_state();
+                    obj_this.reset_state();
                     obj_this.props.navigation.navigate('UserList');
                 }
                 else{
