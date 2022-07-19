@@ -1,6 +1,5 @@
-import EditScreen from '../screen';
-import { Button, StyleSheet, TextInput, ScrollView, ActivityIndicator, View } from 'react-native';
-import apiClient from '../api';
+import {EditScreen, EditStyles} from './edit_screen';
+import { Button, TextInput, ScrollView, ActivityIndicator, View } from 'react-native';
 import NavButton from '../navigation/navbutton';
 import ErrorMessage from './ErrorMessage';
 
@@ -14,49 +13,20 @@ class AddUserScreen extends EditScreen {
     }
 
     storeUser() {
-        let obj_this = this;
-        if (this.state.name === '') {
-            alert('Fill at least your name!')
-        } else {
-            this.setState({
-                isLoading: true,
-            });
-            apiClient.post_data('/user-update', obj_this.get_state()).then((res) => {
-                console.log(res);
-                if(res && res.status == 'success'){
-                    obj_this.reset_state();
-                    obj_this.props.navigation.navigate('UserList');
-                }
-                else{
-                    if(res && res.status == 'error'){
-                        obj_this.setState({
-                            error: res.data,
-                            isLoading: false,
-                        });
-                    }
-                }
-
-            }).catch((err) => {
-                err = "Error: " + err;
-                obj_this.setState({
-                    error: err,
-                    isLoading: false,
-                });
-            });
-        }
+        this.store_data('/user-update', 'UserList');
     }
 
     render() {
         let obj_this = this;
         if (this.state.isLoading) {
             return (
-                <View style={styles.preloader}>
+                <View style={EditStyles.preloader}>
                     <ActivityIndicator size="large" color="#9E9E9E" />
                 </View>
             )
         }
         return (
-            <ScrollView style={styles.container}>
+            <ScrollView style={EditStyles.container}>
                 <NavButton onPress={() => obj_this.props.navigation.navigate('UserList')} />
                 <ErrorMessage txt={obj_this.state.error} />
                 <View>
@@ -66,14 +36,14 @@ class AddUserScreen extends EditScreen {
                         editable={false}
                     />
                 </View>
-                <View style={styles.inputGroup}>
+                <View style={EditStyles.inputGroup}>
                     <TextInput
                         placeholder={'Name'}
                         defaultValue={this.state.name}
                         onChangeText={(val) => this.inputValueUpdate(val, 'name')}
                     />
                 </View>
-                <View style={styles.inputGroup}>
+                <View style={EditStyles.inputGroup}>
                     <TextInput
                         multiline={true}
                         numberOfLines={4}
@@ -82,14 +52,14 @@ class AddUserScreen extends EditScreen {
                         onChangeText={(val) => this.inputValueUpdate(val, 'email')}
                     />
                 </View>
-                <View style={styles.inputGroup}>
+                <View style={EditStyles.inputGroup}>
                     <TextInput
                         placeholder={'Mobile'}
                         defaultValue={this.state.mobile}
                         onChangeText={(val) => this.inputValueUpdate(val, 'mobile')}
                     />
                 </View>
-                <View style={styles.button}>
+                <View style={EditStyles.button}>
                     <Button
                         title='Add User'
                         onPress={() => this.storeUser()}
@@ -100,28 +70,4 @@ class AddUserScreen extends EditScreen {
         );
     }
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 35
-    },
-    inputGroup: {
-        flex: 1,
-        padding: 0,
-        marginBottom: 15,
-        borderBottomWidth: 1,
-        borderBottomColor: '#cccccc',
-    },
-    preloader: {
-        left: 0,
-        right: 0,
-        top: 0,
-        bottom: 0,
-        position: 'absolute',
-        alignItems: 'center',
-        justifyContent: 'center'
-    }
-})
-
 export default AddUserScreen;
