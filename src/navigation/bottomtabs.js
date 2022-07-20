@@ -1,6 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import UserNavigator from './usernav';
 import HomeScreen from '../screens/home';
+import FileUploadScreen from '../screens/fileupload';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const screen_options = ({ route }) => ({
@@ -10,7 +11,7 @@ const screen_options = ({ route }) => ({
             case 'Home':
                 iconName = 'ios-information-circle';
                 break;
-            case 'Settings':
+            case 'Upload':
                 iconName = 'settings';
                 break;
             case 'Users':
@@ -33,6 +34,7 @@ const Tab = createBottomTabNavigator();
 function ViewBottomTabs() {
     return (
         <Tab.Navigator screenOptions={screen_options}>
+            <Tab.Screen name="Upload" component={FileUploadScreen} />
             <Tab.Screen name="Users" component={UserNavigator} />
             <Tab.Screen name="Home" component={HomeScreen} />
         </Tab.Navigator>
