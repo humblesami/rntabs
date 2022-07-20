@@ -8,7 +8,7 @@ import UserUpdate from "../screens/user/UserUpdate";
 const Stack = createStackNavigator();
 
 const UserNavigator = () => (
-    <Stack.Navigator mode="modal" screenOptions={{ headerShown: false }} >
+    <Stack.Navigator screenOptions={{ headerShown: false }} >
         <Stack.Screen name="UserList" component={UserList} />
         <Stack.Screen name="UserUpdate" component={UserUpdate} />
     </Stack.Navigator>

@@ -1,163 +1,80 @@
-// Example of File Picker in React Native
-// https://aboutreact.com/file-picker-in-react-native/
-
-// Import React
-import React, { useState } from 'react';
-// Import required components
+import React from 'react';
 import {
-    SafeAreaView,
     StyleSheet,
     Text,
     View,
+    Button,
     TouchableOpacity,
     ScrollView,
     Image,
 } from 'react-native';
-
-// Import Document Picker
 import DocumentPicker from 'react-native-document-picker';
 
-const FileUploadScreen = () => {
-    const [singleFile, setSingleFile] = useState('');
-    const [multipleFile, setMultipleFile] = useState([]);
 
-    const selectOneFile = async () => {
-        //Opening Document Picker for selection of one file
+export default class FileUploadScreen extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            singleFile: '',
+        };
+    }
+
+    async selectOneFile() {
         try {
             const res = await DocumentPicker.pick({
                 type: [DocumentPicker.types.allFiles],
-                //There can me more options as well
-                // DocumentPicker.types.allFiles
-                // DocumentPicker.types.images
-                // DocumentPicker.types.plainText
-                // DocumentPicker.types.audio
-                // DocumentPicker.types.pdf
             });
-            //Printing the log realted to the file
-            console.log('res : ' + JSON.stringify(res));
-            console.log('URI : ' + res.uri);
-            console.log('Type : ' + res.type);
-            console.log('File Name : ' + res.name);
-            console.log('File Size : ' + res.size);
-            //Setting the state to show single file attributes
-            setSingleFile(res);
-        } catch (err) {
-            //Handling any exception (If any)
+            console.log('selectOneFile() : ' + JSON.stringify(res));
+            this.setState({ singleFile: res });
+        }
+        catch (err) {
+            //If user cancels document selection
             if (DocumentPicker.isCancel(err)) {
-                //If user canceled the document selection
                 alert('Canceled from single doc picker');
-            } else {
-                //For Unknown Error
+            }
+            else {
                 alert('Unknown Error: ' + JSON.stringify(err));
+                //throw err;
             }
         }
-    };
-
-    const selectMultipleFile = async () => {
-        //Opening Document Picker for selection of multiple file
-        try {
-            const results = await DocumentPicker.pickMultiple({
-                type: [DocumentPicker.types.images],
-                //There can me more options as well find above
-            });
-            for (const res of results) {
-                //Printing the log realted to the file
-                console.log('res : ' + JSON.stringify(res));
-                console.log('URI : ' + res.uri);
-                console.log('Type : ' + res.type);
-                console.log('File Name : ' + res.name);
-                console.log('File Size : ' + res.size);
-            }
-            //Setting the state to show multiple file attributes
-            setMultipleFile(results);
-        } catch (err) {
-            //Handling any exception (If any)
-            if (DocumentPicker.isCancel(err)) {
-                //If user canceled the document selection
-                alert('Canceled from multiple doc picker');
-            } else {
-                //For Unknown Error
-                alert('Unknown Error: ' + JSON.stringify(err));
-            }
-        }
-    };
-
-    return (
-        <SafeAreaView style={{ flex: 1 }}>
-            <Text style={styles.titleText}>
-                Example of File Picker in React Native
+    }
+    
+    getFileText(item) {
+        return (
+            <Text style={styles.text}>
+                File Name: {item.name ? item.name : ''}
+                {'\n'}
+                Type: {item.type ? item.type : ''}
+                {'\n'}
+                File Size: {item.size ? item.size : ''}
+                {'\n'}
+                URI: {item.uri ? item.uri : ''}
+                {'\n'}
             </Text>
+        );
+    };
+
+    render() {
+        return (
             <View style={styles.container}>
-                {/*To show single file attribute*/}
                 <TouchableOpacity
-                    activeOpacity={0.5}
-                    style={styles.buttonStyle}
-                    onPress={selectOneFile}>
-                    {/*Single file selection button*/}
-                    <Text style={{ marginRight: 10, fontSize: 19 }}>
-                        Click here to pick one file
-                    </Text>
+                    activeOpacity={0.9}
+                    style={styles.button}
+                    onPress={this.selectOneFile.bind(this)}>
+                    <Text style={{ marginRight: 10, fontSize: 19, color: 'white' }}> Pick one file </Text>
                     <Image
                         source={{
                             uri: 'https://img.icons8.com/offices/40/000000/attach.png',
                         }}
-                        style={styles.imageIconStyle}
+                        style={styles.imageIcon}
                     />
                 </TouchableOpacity>
-                {/*Showing the data of selected Single file*/}
-                <Text style={styles.textStyle}>
-                    File Name: {singleFile.name ? singleFile.name : ''}
-                    {'\n'}
-                    Type: {singleFile.type ? singleFile.type : ''}
-                    {'\n'}
-                    File Size: {singleFile.size ? singleFile.size : ''}
-                    {'\n'}
-                    URI: {singleFile.uri ? singleFile.uri : ''}
-                    {'\n'}
-                </Text>
-                <View
-                    style={{
-                        backgroundColor: 'grey',
-                        height: 2,
-                        margin: 10
-                    }} />
-                {/*To multiple single file attribute*/}
-                <TouchableOpacity
-                    activeOpacity={0.5}
-                    style={styles.buttonStyle}
-                    onPress={selectMultipleFile}>
-                    {/*Multiple files selection button*/}
-                    <Text style={{ marginRight: 10, fontSize: 19 }}>
-                        Click here to pick multiple files
-                    </Text>
-                    <Image
-                        source={{
-                            uri: 'https://img.icons8.com/offices/40/000000/attach.png',
-                        }}
-                        style={styles.imageIconStyle}
-                    />
-                </TouchableOpacity>
-                <ScrollView>
-                    {/*Showing the data of selected Multiple files*/}
-                    {multipleFile.map((item, key) => (
-                        <View key={key}>
-                            <Text style={styles.textStyle}>
-                                File Name: {item.name ? item.name : ''}
-                                {'\n'}
-                                Type: {item.type ? item.type : ''}
-                                {'\n'}
-                                File Size: {item.size ? item.size : ''}
-                                {'\n'}
-                                URI: {item.uri ? item.uri : ''}
-                                {'\n'}
-                            </Text>
-                        </View>
-                    ))}
-                </ScrollView>
+                {this.getFileText(this.state.singleFile)}
+                <View style={{ backgroundColor: 'grey', height: 2, margin: 10 }} />
             </View>
-        </SafeAreaView>
-    );
-};
+        );
+    }
+}
 
 const styles = StyleSheet.create({
     container: {
@@ -165,29 +82,21 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         padding: 16,
     },
-    titleText: {
-        fontSize: 22,
-        fontWeight: 'bold',
-        textAlign: 'center',
-        paddingVertical: 20,
-    },
-    textStyle: {
+    text: {
         backgroundColor: '#fff',
         fontSize: 15,
         marginTop: 16,
         color: 'black',
     },
-    buttonStyle: {
+    button: {
         alignItems: 'center',
         flexDirection: 'row',
-        backgroundColor: '#DDDDDD',
+        backgroundColor: '#fd2ded',
         padding: 5,
     },
-    imageIconStyle: {
+    imageIcon: {
         height: 20,
         width: 20,
-        resizeMode: 'stretch',
+        resizeMode: 'stretch'
     },
 });
-
-export default FileUploadScreen;
