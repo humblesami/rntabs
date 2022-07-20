@@ -11,11 +11,11 @@ let apiClient = {};
         else{
             fetch_options.body = req_data;
         }
-        console.log(fetch_options, req_data);
+        // console.log(fetch_options, req_data);
         try{
             const fetchResult = await fetch(api_url+endpoint, fetch_options);
             const result = await fetchResult.json(); // parsing the response
-            console.log(result);
+            // console.log(result);
             if (fetchResult.ok) {
                 return result; // return success object
             }
@@ -58,7 +58,7 @@ let apiClient = {};
         post_data: async function(endpoint, item_to_save={}){
             try{
                 let req_data = new FormData();
-                console.log(item_to_save);
+                // console.log(item_to_save);
                 for (let key in item_to_save) {
                     req_data.append(key, item_to_save[key]);
                 }

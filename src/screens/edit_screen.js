@@ -15,7 +15,6 @@ class EditScreen extends Component {
         this.attributes.forEach((prop)=>{
             _self.state[prop] = '';
         });
-        // console.log(this.state, this.attributes, received_obj);
         if(received_obj && received_obj.id){
             this.attributes.forEach((prop)=>{
                 _self.state[prop] = received_obj[prop];

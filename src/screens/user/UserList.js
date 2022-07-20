@@ -17,8 +17,14 @@ class UserScreen extends Component {
             userArr: [],
             error: ''
         };
-        this.getData();
-        console.log(received.route.params);
+        //console.log(received.route.params, 1112);
+    }
+
+    componentDidMount() {
+        let obj_this = this;
+        this.focusListener = this.props.navigation.addListener('focus', () => {
+            obj_this.getData();
+        });
     }
 
     getData(){
@@ -54,7 +60,7 @@ class UserScreen extends Component {
             <ScrollView style={EditStyles.container}>
                 <View style={EditStyles.buttonWithText}>
                     <View>
-                        <NavButton onPress={() => obj_this.props.navigation.navigate('UserUpdate', {q: new Date().toString()})} />
+                        <NavButton onPress={() => obj_this.props.navigation.navigate('UserUpdate')} />
                     </View>
                     <View style={{paddingTop: 10, paddingLeft:10}}>
                         <Text>Add New User</Text>

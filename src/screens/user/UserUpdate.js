@@ -29,7 +29,7 @@ class AddUserScreen extends EditScreen {
             <ScrollView style={EditStyles.container}>
                 <View style={EditStyles.buttonWithText}>
                     <View>
-                        <NavButton icon="mail" onPress={() => obj_this.props.navigation.navigate('UserList', {q: new Date().toString()})} />
+                        <NavButton icon="mail" onPress={() => obj_this.props.navigation.navigate('UserList')} />
                     </View>
                     <View style={{paddingTop: 10, paddingLeft:10}}>
                         <Text>User List</Text>
@@ -37,16 +37,6 @@ class AddUserScreen extends EditScreen {
                 </View>
 
                 <ErrorMessage txt={obj_this.state.error} />
-                <View>
-                    <Text>{new Date().toString()}</Text>
-                </View>
-                <View>
-                    <TextInput
-                        placeholder={'Id'}
-                        defaultValue={this.state.id}
-                        editable={false}
-                    />
-                </View>
                 <View style={EditStyles.inputGroup}>
                     <TextInput
                         placeholder={'Name'}

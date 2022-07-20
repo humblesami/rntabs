@@ -1,11 +1,12 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import UserNavigator from './usernav';
+import HomeScreen from '../screens/home';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const screen_options = ({ route }) => ({
     tabBarIcon: ({ focused, color, size }) => {
         let iconName;
-        switch(route.name){
+        switch (route.name) {
             case 'Home':
                 iconName = 'ios-information-circle';
                 break;
@@ -27,13 +28,7 @@ const screen_options = ({ route }) => ({
 
 const Tab = createBottomTabNavigator();
 
-function HomeScreen() {
-    return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text>Home!</Text>
-        </View>
-    );
-}
+
 
 function ViewBottomTabs() {
     return (
