@@ -4,20 +4,28 @@ let apiClient = {};
     async function fetch_request(endpoint, method, req_data={}) {
         let fetch_options = {
             method: method,
-        }        
+        }
         if(method.toLowerCase() == 'get'){
-            fetch_options.data = req_data;            
+            fetch_options.data = req_data;
         }
         else{
             fetch_options.body = req_data;
         }
         console.log(fetch_options, req_data);
-        try {
-            const response = await fetch(api_url+endpoint, fetch_options);
-            const res = response.json();
+        try{
+            const fetchResult = await fetch(api_url+endpoint, fetch_options);
+            const result = await fetchResult.json(); // parsing the response
+            console.log(result);
+            if (fetchResult.ok) {
+                return result; // return success object
+            }
+            const formatted_error = (result.code || '') +' => '+ (result.message || '');
+            throw new Error(formatted_error);
+        }
+        catch(err){
+            //console.log('Error in fetch => ', err);
+            let res = reject_promise(err, api_url+endpoint);
             return res;
-        } catch (err) {
-            return reject_promise(err, api_url+endpoint);
         }
     }
 
@@ -35,7 +43,7 @@ let apiClient = {};
             error_message = stack[0];
         }
         stack = stack.join('\n\n');
-        console.log('Error in ' + endpoint + '\n\n' +stack);
+        console.log('Error in API ' + endpoint + '\n\n' +stack);
         return new Promise(function (resolve, reject) {
             reject(error_message);
         });

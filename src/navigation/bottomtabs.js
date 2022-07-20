@@ -1,17 +1,45 @@
-import HomeScreen from '../screens/home';
-import SettingsScreen from '../screens/settings';
-import screen_options from './options';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import UserNavigator from './usernav';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
+const screen_options = ({ route }) => ({
+    tabBarIcon: ({ focused, color, size }) => {
+        let iconName;
+        switch(route.name){
+            case 'Home':
+                iconName = 'ios-information-circle';
+                break;
+            case 'Settings':
+                iconName = 'settings';
+                break;
+            case 'Users':
+                iconName = 'barcode';
+                break;
+            default:
+                iconName = 'th-list';
+                break;
+        }
+        return <Ionicons name={iconName} size={size} color={color} />;
+    },
+    tabBarActiveTintColor: 'green',
+    tabBarInactiveTintColor: 'gray',
+});
 
 const Tab = createBottomTabNavigator();
+
+function HomeScreen() {
+    return (
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <Text>Home!</Text>
+        </View>
+    );
+}
 
 function ViewBottomTabs() {
     return (
         <Tab.Navigator screenOptions={screen_options}>
             <Tab.Screen name="Users" component={UserNavigator} />
             <Tab.Screen name="Home" component={HomeScreen} />
-            <Tab.Screen name="Settings" component={SettingsScreen} />
         </Tab.Navigator>
     );
 }

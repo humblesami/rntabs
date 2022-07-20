@@ -1,7 +1,7 @@
-import {EditScreen, EditStyles} from './edit_screen';
+import {EditScreen, EditStyles} from '../edit_screen';
 import { Button, TextInput, ScrollView, ActivityIndicator, Text, View } from 'react-native';
-import NavButton from '../navigation/navbutton';
-import ErrorMessage from './ErrorMessage';
+import NavButton from '../../navigation/navbutton';
+import ErrorMessage from '../ErrorMessage';
 
 
 class AddUserScreen extends EditScreen {

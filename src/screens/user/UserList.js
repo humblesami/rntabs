@@ -3,10 +3,9 @@
 import React, { Component } from 'react';
 import { StyleSheet, ScrollView, ActivityIndicator, Text, View } from 'react-native';
 import { ListItem } from 'react-native-elements'
-// import { FlatList } from 'react-native-web';
-import apiClient from '../api';
-import NavButton from '../navigation/navbutton';
-import {EditStyles} from './edit_screen';
+import apiClient from '../../api';
+import NavButton from '../../navigation/navbutton';
+import {EditStyles} from '../edit_screen';
 
 
 class UserScreen extends Component {
